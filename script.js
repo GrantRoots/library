@@ -12,6 +12,11 @@ Book.prototype.info = function () {
     return `This book is named ${this.title}, ${this.author} is the author, It has ${this.pages} pages, ${this.read}`
 }
 
+Book.prototype.remove = function () {
+  let i = myLibrary.indexOf(this)
+  myLibrary.splice(i, 1)
+}
+
 function addBookToLibrary(book) {
   // do stuff here
   myLibrary.push(book)
@@ -19,7 +24,7 @@ function addBookToLibrary(book) {
 
 const bookContainer = document.querySelector('#book-container')
 
-const last = myLibrary.length - 1
+let index = 0
 
 function displayBooks () {
     bookContainer.innerHTML = '';
@@ -27,17 +32,24 @@ function displayBooks () {
         console.log(book.info())
         const bookCard = document.createElement('div')
         bookCard.textContent = book.info();
+
         // add read button
         const readButton = document.createElement('button')
         readButton.textContent = 'Did you read this?'
         readButton.setAttribute("id", "readButton");
+
         //  add remove book button
         const removeButton = document.createElement('button')
         removeButton.textContent = 'Remove Book'
         removeButton.setAttribute("id", "removeButton");
+
         bookCard.appendChild(readButton)
         bookCard.appendChild(removeButton)
         bookContainer.appendChild(bookCard)
+
+        removeButton.addEventListener('click', () => {
+          book.remove()
+        })
     })
 }
 
@@ -68,7 +80,6 @@ bookDialog.addEventListener("close", (e) => {
 confirmBtn.addEventListener("click", (event) => {
   event.preventDefault(); // We don't want to submit this fake form
   let newBook = new Book(title.value, author.value, pages.value)
-  console.log(newBook.info())
   addBookToLibrary(newBook);
   displayBooks();
   bookDialog.close(); // Have to send the select box value here.
