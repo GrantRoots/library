@@ -5,11 +5,11 @@ function Book(title, author, pages) {
   this.title = title;
   this.author = author;
   this.pages = pages;
-  read = true
+  this.read = true
 }
 
 Book.prototype.info = function () {
-    return `This book is named ${this.title}, ${this.author} is the author, It has ${this.pages} pages, ${this.read}`
+    return `This book is named ${this.title}, The author is ${this.author}, It has ${this.pages} pages, Read: ${this.read}`
 }
 
 Book.prototype.remove = function () {
@@ -35,7 +35,7 @@ function displayBooks () {
 
         // add read button
         const readButton = document.createElement('button')
-        readButton.textContent = 'Did you read this?'
+        readButton.textContent = 'Change Read'
         readButton.setAttribute("id", "readButton");
 
         //  add remove book button
@@ -43,13 +43,27 @@ function displayBooks () {
         removeButton.textContent = 'Remove Book'
         removeButton.setAttribute("id", "removeButton");
 
-        bookCard.appendChild(readButton)
-        bookCard.appendChild(removeButton)
-        bookContainer.appendChild(bookCard)
+        readButton.addEventListener('click', () => {
+          switch(book.read) {
+            case true:
+              book.read = false;
+              break;
+            case false:
+              book.read = true;
+              break;
+          }
+          let update = bookCard.childNodes[0] 
+          update.nodeValue = book.info()
+        })
 
         removeButton.addEventListener('click', () => {
           book.remove()
+          bookCard.innerHTML = ''
         })
+
+        bookCard.appendChild(readButton)
+        bookCard.appendChild(removeButton)
+        bookContainer.appendChild(bookCard)
     })
 }
 
@@ -63,28 +77,18 @@ const pages = bookDialog.querySelector("#pages");
 
 const confirmBtn = bookDialog.querySelector("#confirmBtn");
 
-// "Show the dialog" button opens the <dialog> modally
 showButton.addEventListener("click", () => {
   bookDialog.showModal();
 });
 
-// "Cancel" button closes the dialog without submitting because of [formmethod="dialog"], triggering a close event.
 bookDialog.addEventListener("close", (e) => {
-  outputBox.value =
-    bookDialog.returnValue === "default"
-      ? "No return value."
-      : `ReturnValue: ${title.value} ${author.value} ${pages.value}`; // Have to check for "default" rather than empty string
+  bookDialog.close()
 });
 
-// Prevent the "confirm" button from the default behavior of submitting the form, and close the dialog with the `close()` method, which triggers the "close" event.
 confirmBtn.addEventListener("click", (event) => {
-  event.preventDefault(); // We don't want to submit this fake form
+  event.preventDefault();
   let newBook = new Book(title.value, author.value, pages.value)
   addBookToLibrary(newBook);
   displayBooks();
-  bookDialog.close(); // Have to send the select box value here.
+  bookDialog.close();
 });
-
-function removeBook() {
-
-}
