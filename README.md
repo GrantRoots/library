@@ -1,1 +1,2 @@
 # library
+Library is a project I made using html and javascript. The user presses a button which brings up a dialog form for them to fill out information about a book then when they submit the informaiton it displays as text and adds it to the library. Then they will also see two other buttons to indicate if they have read the book or if they want to remove it from the library.
