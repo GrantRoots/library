@@ -1,21 +1,34 @@
 const myLibrary = [];
 
-function Book(title, author, pages) {
+class Book {
   // the constructor...
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = true
-}
+  constructor(title, author, pages) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = true;
+  }
 
-Book.prototype.info = function () {
+  info = () => {
     return `This book is named ${this.title}, The author is ${this.author}, It has ${this.pages} pages, Read: ${this.read}`
+  };
+
+  remove() {
+    let i = myLibrary.indexOf(this)
+    myLibrary.splice(i, 1)
+  };
 }
 
-Book.prototype.remove = function () {
-  let i = myLibrary.indexOf(this)
-  myLibrary.splice(i, 1)
-}
+//old code
+
+// Book.prototype.info = function () {
+//     return `This book is named ${this.title}, The author is ${this.author}, It has ${this.pages} pages, Read: ${this.read}`
+// }
+
+// Book.prototype.remove = function () {
+//   let i = myLibrary.indexOf(this)
+//   myLibrary.splice(i, 1)
+// }
 
 function addBookToLibrary(book) {
   // do stuff here
